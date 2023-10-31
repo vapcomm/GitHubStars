@@ -129,6 +129,20 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.8.0")
     implementation("androidx.navigation:navigation-compose:2.7.4")
 
+    // https://github.com/ktorio/ktor/releases
+    val ktorVersion = "2.3.5"
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+
+    // https://github.com/Kotlin/kotlinx.serialization/releases
+    val serializationVersion = "1.6.0"
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+
     // https://github.com/InsertKoinIO/koin/tags
     val koinVersion = "3.5.0"
     implementation("io.insert-koin:koin-android:$koinVersion")
@@ -140,4 +154,8 @@ dependencies {
 
     androidTestImplementation(composeBom)
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+
+    //TODO: implementation("io.ktor:ktor-client-mock:$ktorVersion")
+    //TODO: implementation("io.ktor:ktor-server-test-host:$ktorVersion")
+
 }
