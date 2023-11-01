@@ -4,6 +4,7 @@ import java.util.*
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
 android {
@@ -20,7 +21,7 @@ android {
         setProperty("archivesBaseName", "githubstars-$versionName")
 
         // global config
-        buildConfigField("String", "GITHUB_SEARCH_ENDPOINT", "\"https://api.github.com/search/\"")
+        buildConfigField("String", "GITHUB_SEARCH_ENDPOINT", "\"https://api.github.com/search\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

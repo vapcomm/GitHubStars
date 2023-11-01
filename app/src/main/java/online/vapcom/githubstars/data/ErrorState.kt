@@ -65,6 +65,6 @@ data class ErrorState(
 /**
  * Encodes error code from module number and error number
  */
-fun errCode(module: Int, errorNumber: Int): Int {
+fun moduleErrorCode(module: Int, errorNumber: Int): Int {
     return module * 100 + errorNumber
 }

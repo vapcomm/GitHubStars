@@ -18,7 +18,7 @@ import org.koin.dsl.module
  */
 val appModule = module {
     single {
-        GitHubEndpoint(gitHubURL = BuildConfig.GITHUB_SEARCH_ENDPOINT)
+        GitHubEndpoint(searchURL = BuildConfig.GITHUB_SEARCH_ENDPOINT)
     }
 
     singleOf(::GitHubRepositoryImpl) { bind<GitHubRepository>() }

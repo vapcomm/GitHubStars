@@ -8,7 +8,7 @@ package online.vapcom.githubstars.data
  * Description of GitHub repository
  */
 data class GitHubRepo(
-    val id: String,
+    val id: Long,
     val name: String,       // given name
     val desc: String,       // repo description
     val stars: Long,        // number of stars

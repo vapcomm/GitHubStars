@@ -14,15 +14,14 @@ import online.vapcom.githubstars.network.GitHubEndpoint
 /**
  * Data source from GitHub
  */
-class GitHubRepositoryImpl(private val ghEndpoint: GitHubEndpoint) : GitHubRepository {
+class GitHubRepositoryImpl(private val endpoint: GitHubEndpoint) : GitHubRepository {
     companion object {
         private const val TAG = "GitHubRepo"
     }
 
     override suspend fun getStarredReposList(): Reply<List<GitHubRepo>> = withContext(Dispatchers.IO)  {
         Log.i(TAG, ">>> getStarredReposList:")
-
-        Reply.Success(emptyList())
+        endpoint.getStarredReposList()
     }
 
 }
