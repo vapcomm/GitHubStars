@@ -26,7 +26,7 @@ class GitHubEndpoint(val searchURL: String, private val httpClient: HttpClient =
     }
 
     suspend fun getStarredReposList(): Reply<List<GitHubRepo>> {
-        val url = "$searchURL/repositories?q=stars:>1&sort=stars&order=desc&per_page=5&page=1"
+        val url = "$searchURL/repositories?q=stars:>1&sort=stars&order=desc&per_page=10&page=1"
 
         return try {
              val response = httpClient.get(url) {
