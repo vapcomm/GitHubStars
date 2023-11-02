@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import online.vapcom.githubstars.data.ErrorState
+import online.vapcom.githubstars.data.Reply
 import online.vapcom.githubstars.repo.GitHubRepository
 
 private const val TAG = "RepoListVM"
@@ -32,9 +33,32 @@ class RepoListViewModel(private val ghRepository: GitHubRepository) : ViewModel(
             _state.update { it.copy(isLoading = true, error = ErrorState.NO_ERROR) }
             Log.i(TAG, "++++ loadRepositoriesList: START")
 
-            val reply = ghRepository.getStarredReposList()
-            //_state.update { it.copy(isLoading = false) }
+            when (val reply = ghRepository.getStarredReposList()) {
+                is Reply.Success -> {
+                    Log.i(TAG, "++++ loadRepositoriesList: loaded repos: ${reply.value.size}")
+                    _state.update { it.copy(isLoading = false, repos = reply.value) }
+                }
+                is Reply.Error -> {
+                    Log.i(TAG, "++++ loadRepositoriesList: error: ${reply.error}")
+                    _state.update { it.copy(isLoading = false, repos = emptyList(), error = reply.error) }
+                }
+            }
         }
+    }
+
+    /**
+     * Clear up error state
+     */
+    fun clearErrorState() {
+        Log.i(TAG, "++++ clearErrorState")
+        _state.update { it.copy(error = ErrorState.NO_ERROR) }
+    }
+
+    /**
+     * Full reload of repos list
+     */
+    fun reload() {
+        loadRepositoriesList()
     }
 
 }

@@ -11,6 +11,7 @@ import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.RedirectResponseException
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.ServerResponseException
+import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.JsonConvertException
 import kotlinx.serialization.SerializationException
 import online.vapcom.githubstars.data.ErrorState
@@ -32,6 +33,7 @@ fun ktorExceptionToErrorState(url: String, ex: Exception, defaultErrorCode: Int)
             val rsp = ex.response
             when (rsp.status.value) {
                 401, 403 -> ErrorState(UIErrno.SESSION_CLOSED.errno, rsp.status.toString())
+                422 -> ErrorState(UIErrno.CONTENT_ERROR.errno, rsp.status.toString())
                 else -> ErrorState(UIErrno.CLIENT_ERROR.errno, rsp.status.toString())
             }
         }
@@ -72,3 +74,23 @@ private fun systemNetworkExceptionToErrorState(url: String, ex: Exception, defau
     }
     
 }
+
+/**
+ * Translates HTTP error status codes to ErrorState.
+ *
+ * You should check response status before calling this function, it returns error on any HTTP codes.
+ * ```
+ * response.status.isSuccess()
+ * ```
+ */
+fun httpStatusToErrorState(status: HttpStatusCode, moduleCode: Int): ErrorState {
+    return when (status.value) {
+        in 300..399 -> ErrorState(UIErrno.SERVER_ERROR.errno, "Server error: $moduleCode, $status")
+        401, 403 -> ErrorState(UIErrno.SESSION_CLOSED.errno, status.toString())
+        422 -> ErrorState(UIErrno.CONTENT_ERROR.errno, status.toString())
+        in 400..499 -> ErrorState(UIErrno.CLIENT_ERROR.errno, status.toString())
+        in 500..599 -> ErrorState(UIErrno.SERVER_ERROR.errno, "Server error: $moduleCode, $status")
+        else -> ErrorState(UIErrno.CLIENT_ERROR.errno, status.toString())
+    }
+}
+

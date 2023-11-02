@@ -52,7 +52,8 @@ fun TopNavigation(navController: NavHostController) {
                 viewModel = viewModel,
                 onRepoClick = { repoID ->
                     navController.navigate("details/$repoID")
-                }
+                },
+                onReload = viewModel::reload
             )
         }
 
