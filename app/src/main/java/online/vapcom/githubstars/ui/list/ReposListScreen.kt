@@ -162,6 +162,7 @@ fun ReposList(repos: List<GitHubRepo>, onRepoClick: (repoID: Long) -> Unit) {
                         text = repo.name,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
+                        color = MaterialTheme.colorScheme.secondary,
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(

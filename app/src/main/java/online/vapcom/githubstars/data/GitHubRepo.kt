@@ -16,4 +16,8 @@ data class GitHubRepo(
     val lang: String,       // primary language
     val url: String,        // URL of repo on GitHub
     val iconURL: String     // URL of repo's icon picture
-)
+) {
+    companion object {
+        val EMPTY: GitHubRepo = GitHubRepo(0, "", "", 0, 0, "", "", "")
+    }
+}

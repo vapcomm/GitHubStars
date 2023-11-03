@@ -21,5 +21,8 @@
     <string name="repositories_not_found">Repositories with stars not found</string>
     <string name="reload">Reload</string>
 
+    <string name="back">Back</string>
+    <string name="see_on_github">See on GitHub</string>
+
 
 </resources>

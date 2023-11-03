@@ -9,5 +9,5 @@ import online.vapcom.githubstars.data.Reply
 
 interface GitHubRepository {
     suspend fun getStarredReposList(): Reply<List<GitHubRepo>>
-
+    suspend fun getRepoDetails(repoID: Long): Reply<GitHubRepo>
 }

@@ -8,6 +8,7 @@ import online.vapcom.githubstars.network.GitHubEndpoint
 import online.vapcom.githubstars.repo.GitHubRepository
 import online.vapcom.githubstars.repo.GitHubRepositoryImpl
 import online.vapcom.githubstars.ui.list.RepoListViewModel
+import online.vapcom.githubstars.ui.details.RepoDetailsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -24,5 +25,5 @@ val appModule = module {
     singleOf(::GitHubRepositoryImpl) { bind<GitHubRepository>() }
 
     viewModelOf(::RepoListViewModel)
-    //TODO: viewModelOf(::RepoDetailsViewModel)
+    viewModelOf(::RepoDetailsViewModel)
 }
