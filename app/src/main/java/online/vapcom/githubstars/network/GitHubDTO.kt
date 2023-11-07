@@ -20,6 +20,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SearchReposResponse(
     @SerialName("total_count") val totalCount: Long = 0,
+    @SerialName("incomplete_results") val incompleteResults: Boolean = false,
     val items: List<Repo> = emptyList()
 ) {
     /**

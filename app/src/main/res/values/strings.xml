@@ -23,6 +23,7 @@
 
     <string name="back">Back</string>
     <string name="see_on_github">See on GitHub</string>
+    <string name="unable_to_load_data">Unable to load data from server, try again later</string>
 
 
 </resources>

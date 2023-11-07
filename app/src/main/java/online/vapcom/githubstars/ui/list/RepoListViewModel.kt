@@ -15,15 +15,19 @@ import online.vapcom.githubstars.data.ErrorState
 import online.vapcom.githubstars.data.Reply
 import online.vapcom.githubstars.repo.GitHubRepository
 
-private const val TAG = "RepoListVM"
-
 class RepoListViewModel(private val ghRepository: GitHubRepository) : ViewModel() {
 
-    private val _state = MutableStateFlow(RepoListState())
+    companion object {
+        private const val TAG = "RepoListVM"
+        private const val ITEMS_PER_PAGE = 25   // size of the one scrolled page of repos list
+    }
+
+    private val _state = MutableStateFlow(RepoListState(reposPerPage = ITEMS_PER_PAGE))
     val state: StateFlow<RepoListState>
         get() = _state
 
     init {
+        ghRepository.setReposPerPage(ITEMS_PER_PAGE)
         // read first page of repositories list
         loadRepositoriesList()
     }
@@ -35,9 +39,19 @@ class RepoListViewModel(private val ghRepository: GitHubRepository) : ViewModel(
 
             when (val reply = ghRepository.getStarredReposList()) {
                 is Reply.Success -> {
-                    Log.i(TAG, "++++ loadRepositoriesList: loaded repos: ${reply.value.size}")
-                    _state.update { it.copy(isLoading = false, repos = reply.value) }
+                    Log.i(TAG, "++++ loadRepositoriesList: loaded repos: ${reply.value.repos.size}")
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            repos = reply.value.repos,
+                            foundReposNumber = reply.value.totalFound,
+                            currentPage = reply.value.currentPage,
+                            maxPage = reply.value.maxPage,
+                            reposPerPage = reply.value.reposPerPage
+                        )
+                    }
                 }
+
                 is Reply.Error -> {
                     Log.i(TAG, "++++ loadRepositoriesList: error: ${reply.error}")
                     _state.update { it.copy(isLoading = false, repos = emptyList(), error = reply.error) }
@@ -58,6 +72,22 @@ class RepoListViewModel(private val ghRepository: GitHubRepository) : ViewModel(
      * Full reload of repos list
      */
     fun reload() {
+        loadRepositoriesList()
+    }
+
+    /**
+     * Go to the previous page and get new repos list
+     */
+    fun previousPage() {
+        ghRepository.previousPage()
+        loadRepositoriesList()
+    }
+
+    /**
+     * Go to the next page and get new repos list
+     */
+    fun nextPage() {
+        ghRepository.nextPage()
         loadRepositoriesList()
     }
 

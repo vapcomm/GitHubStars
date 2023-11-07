@@ -17,23 +17,43 @@ import online.vapcom.githubstars.network.GitHubEndpoint
  * Data source from GitHub
  */
 class GitHubRepositoryImpl(private val endpoint: GitHubEndpoint) : GitHubRepository {
+
     companion object {
         private const val TAG = "GitHubRepo"
     }
+
+    private var currentPage: Int = 1
+    private var reposPerPage: Int = 1
 
     // current shown GitHub repos list
     private var reposList: List<GitHubRepo> = emptyList()
 
     /**
+     * Set number of repos shown on page (in repos list)
+     */
+    override fun setReposPerPage(reposPerPage: Int) {
+        this.reposPerPage = reposPerPage
+    }
+
+    /**
      * Request repositories list from GitHub
      */
-    override suspend fun getStarredReposList(): Reply<List<GitHubRepo>> = withContext(Dispatchers.IO)  {
+    override suspend fun getStarredReposList(): Reply<SearchReplyData> = withContext(Dispatchers.IO) {
         Log.i(TAG, ">>> getStarredReposList:")
-        when (val reply = endpoint.getStarredReposList()) {
+        when (val reply = endpoint.getStarredReposList(currentPage, reposPerPage)) {
             is Reply.Success -> {
-                reposList = reply.value
-                reply
+                reposList = reply.value.second
+                Reply.Success(
+                    SearchReplyData(
+                        totalFound = reply.value.first,
+                        currentPage = currentPage,
+                        maxPage = endpoint.getMaxPage(reposPerPage),
+                        reposPerPage = reposPerPage,
+                        repos = reply.value.second
+                    )
+                )
             }
+
             is Reply.Error -> reply
         }
     }
@@ -46,6 +66,22 @@ class GitHubRepositoryImpl(private val endpoint: GitHubEndpoint) : GitHubReposit
         val repo = reposList.find { it.id == repoID }
         return if (repo != null) Reply.Success(repo)
         else Reply.Error(ErrorState(UIErrno.DATA_NOT_FOUND.errno, "Repository with ID '$repoID' not found"))
+    }
+
+    /**
+     * Switch to the previous page
+     */
+    override fun previousPage() {
+        if(currentPage > 1)
+            currentPage--
+    }
+
+    /**
+     * Switch to the next page
+     */
+    override fun nextPage() {
+        if(currentPage < endpoint.getMaxPage(reposPerPage))
+            currentPage++
     }
 
 }
