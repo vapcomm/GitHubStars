@@ -21,7 +21,7 @@ class NetworkClientBuilder(private val logTag: String = TAG, private val createC
     companion object {
         private const val TAG = "NetClient"
         private const val USER_AGENT = "GitHubStars"
-        // TODO: setup user-agent from system/app dependent function
+        //TODO: setup user-agent from system/app dependent function
     }
 
     /**

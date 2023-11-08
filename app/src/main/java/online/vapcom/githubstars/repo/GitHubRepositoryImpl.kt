@@ -4,7 +4,6 @@
 
 package online.vapcom.githubstars.repo
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import online.vapcom.githubstars.data.ErrorState
@@ -39,7 +38,6 @@ class GitHubRepositoryImpl(private val endpoint: GitHubEndpoint) : GitHubReposit
      * Request repositories list from GitHub
      */
     override suspend fun getStarredReposList(): Reply<SearchReplyData> = withContext(Dispatchers.IO) {
-        Log.i(TAG, ">>> getStarredReposList:")
         when (val reply = endpoint.getStarredReposList(currentPage, reposPerPage)) {
             is Reply.Success -> {
                 reposList = reply.value.repos

@@ -5,6 +5,7 @@
 package online.vapcom.githubstars
 
 import online.vapcom.githubstars.network.GitHubEndpoint
+import online.vapcom.githubstars.network.NetworkClientBuilder
 import online.vapcom.githubstars.repo.GitHubRepository
 import online.vapcom.githubstars.repo.GitHubRepositoryImpl
 import online.vapcom.githubstars.ui.list.RepoListViewModel
@@ -18,9 +19,8 @@ import org.koin.dsl.module
  * Koin's app module with Repo and ViewModels
  */
 val appModule = module {
-    single {
-        GitHubEndpoint(searchURL = BuildConfig.GITHUB_SEARCH_ENDPOINT)
-    }
+    single { NetworkClientBuilder().build() }
+    single { GitHubEndpoint(searchURL = BuildConfig.GITHUB_SEARCH_ENDPOINT, httpClient = get()) }
 
     singleOf(::GitHubRepositoryImpl) { bind<GitHubRepository>() }
 

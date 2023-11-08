@@ -129,7 +129,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.0")
-    implementation("androidx.navigation:navigation-compose:2.7.4")
+    implementation("androidx.navigation:navigation-compose:2.7.5")
 
     // https://github.com/ktorio/ktor/releases
     val ktorVersion = "2.3.5"
@@ -164,9 +164,9 @@ dependencies {
     testImplementation(kotlin("test-common"))
     testImplementation(kotlin("test-annotations-common"))
 
-    //testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.10")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
 
-
-    //TODO: implementation("io.ktor:ktor-client-mock:$ktorVersion")
-    //TODO: implementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    // Koin for Tests
+    testImplementation("io.insert-koin:koin-test-junit4:$koinVersion")
 }

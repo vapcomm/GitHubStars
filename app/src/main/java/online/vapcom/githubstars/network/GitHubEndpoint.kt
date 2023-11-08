@@ -20,7 +20,7 @@ import online.vapcom.githubstars.data.moduleErrorCode
 /**
  * Network requests to GitHub API server
  */
-class GitHubEndpoint(val searchURL: String, private val httpClient: HttpClient = NetworkClientBuilder(TAG).build()) {
+class GitHubEndpoint(val searchURL: String, private val httpClient: HttpClient) {
 
     companion object {
         private const val TAG = "GitHubEndp"
