@@ -39,26 +39,35 @@ import online.vapcom.githubstars.utils.starsToShortString
  */
 @Composable
 fun ReposList(
+    incompleteResults: Boolean,
     repos: List<GitHubRepo>,
     foundReposNumber: Long,
     currentPage: Int,
     maxPage: Int,
     itemsPerPage: Int,
-    onPreviousPage: () -> Unit,
-    onNextPage: () -> Unit,
-    onRepoClick: (repoID: Long) -> Unit
+    onPage: (direction: PageDirection) -> Unit,
+    onRepoClick: (repoID: Long) -> Unit,
+    onReload: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
-        item(key = Long.MIN_VALUE) {
-            PagesNavigationBar(
-                foundReposNumber, currentPage, maxPage, itemsPerPage,
-                onPreviousPage = onPreviousPage,
-                onNextPage = onNextPage,
-                modifier = Modifier.padding(start = 14.dp)
-            )
-            Divider(modifier = Modifier.fillMaxWidth())
+        if (incompleteResults) {
+            item(key = Long.MIN_VALUE) {
+                IncompleteResultsBar(onReload = onReload)
+                Divider(modifier = Modifier.fillMaxWidth())
+            }
+        }
+
+        if (repos.isNotEmpty()) {
+            item(key = Long.MIN_VALUE + 1) {
+                PagesNavigationBar(
+                    foundReposNumber, currentPage, maxPage, itemsPerPage,
+                    onPage = onPage,
+                    modifier = Modifier.padding(start = 14.dp)
+                )
+                Divider(modifier = Modifier.fillMaxWidth())
+            }
         }
 
         items(items = repos, key = { it.id }) { repo ->
@@ -113,14 +122,15 @@ fun ReposList(
             }
         }
 
-        item(key = Long.MAX_VALUE) {
-            Divider(modifier = Modifier.fillMaxWidth())
-            PagesNavigationBar(
-                foundReposNumber, currentPage, maxPage, itemsPerPage,
-                onPreviousPage = onPreviousPage,
-                onNextPage = onNextPage,
-                modifier = Modifier.padding(start = 14.dp)
-            )
+        if (repos.isNotEmpty()) {
+            item(key = Long.MAX_VALUE) {
+                Divider(modifier = Modifier.fillMaxWidth())
+                PagesNavigationBar(
+                    foundReposNumber, currentPage, maxPage, itemsPerPage,
+                    onPage = onPage,
+                    modifier = Modifier.padding(start = 14.dp)
+                )
+            }
         }
     }
 
@@ -132,6 +142,7 @@ fun ReposList(
 fun ReposListBodyPreview() {
     GitHubStarsTheme {
         ReposList(
+            incompleteResults = true,
             repos = listOf(
                 GitHubRepo(
                     1, "vapcom/picocbor", "Minimalistic approach to CBOR encoding in pure Kotlin",

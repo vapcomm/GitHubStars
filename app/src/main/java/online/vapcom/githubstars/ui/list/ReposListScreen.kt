@@ -30,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import online.vapcom.githubstars.R
 import online.vapcom.githubstars.data.GitHubRepo
-import online.vapcom.githubstars.data.UIErrno
 import online.vapcom.githubstars.ui.common.ScreenWithErrorBottomSheet
 import online.vapcom.githubstars.ui.theme.GitHubStarsTheme
 
@@ -47,7 +46,7 @@ fun ReposListScreen(
     val state by viewModel.state.collectAsState()
 
     ScreenWithErrorBottomSheet(
-        isError = state.error.isError() && state.error.code != UIErrno.DATA_ERROR.errno,
+        isError = state.error.isError(),
         error = state.error,
         clearErrorState = viewModel::clearErrorState
     ) {
@@ -61,30 +60,19 @@ fun ReposListScreen(
             },
             modifier = modifier
         ) { innerPadding ->
-            when (state.error.code) {
-                UIErrno.DATA_ERROR.errno -> {
-                    Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-                        UnableToLoadData(
-                            onReload = viewModel::reload,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                }
-
-                else -> ReposListBody(
-                    isLoading = state.isLoading,
-                    repos = state.repos,
-                    foundReposNumber = state.foundReposNumber,
-                    currentPage = state.currentPage,
-                    maxPage = state.maxPage,
-                    reposPerPage = state.reposPerPage,
-                    onPreviousPage = viewModel::previousPage,
-                    onNextPage = viewModel::nextPage,
-                    onRepoClick = onRepoClick,
-                    onReload = viewModel::reload,
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
+            ReposListBody(
+                isLoading = state.isLoading,
+                repos = state.repos,
+                incompleteResults = state.incompleteResults,
+                foundReposNumber = state.foundReposNumber,
+                currentPage = state.currentPage,
+                maxPage = state.maxPage,
+                reposPerPage = state.reposPerPage,
+                onPage = viewModel::changePage,
+                onRepoClick = onRepoClick,
+                onReload = viewModel::reload,
+                modifier = Modifier.padding(innerPadding)
+            )
         }
     }
 }
@@ -92,13 +80,13 @@ fun ReposListScreen(
 @Composable
 fun ReposListBody(
     isLoading: Boolean,
+    incompleteResults: Boolean,
     repos: List<GitHubRepo>,
     foundReposNumber: Long,
     currentPage: Int,
     maxPage: Int,
     reposPerPage: Int,
-    onPreviousPage: () -> Unit,
-    onNextPage: () -> Unit,
+    onPage: (direction: PageDirection) -> Unit,
     onRepoClick: (repoID: Long) -> Unit,
     onReload: () -> Unit,
     modifier: Modifier = Modifier
@@ -123,11 +111,11 @@ fun ReposListBody(
                 }
             }
         } else {
-            if (!isLoading)
-                ReposList(
-                    repos, foundReposNumber, currentPage, maxPage, reposPerPage,
-                    onPreviousPage, onNextPage, onRepoClick
-                )
+            ReposList(
+                incompleteResults,
+                repos, foundReposNumber, currentPage, maxPage, reposPerPage,
+                onPage, onRepoClick, onReload
+            )
         }
 
         if (isLoading) {
@@ -151,12 +139,13 @@ fun ReposListBodyEmptyPreview() {
     GitHubStarsTheme {
         ReposListBody(
             isLoading = false,
+            incompleteResults = false,
             repos = emptyList(),
             foundReposNumber = 230000,
             currentPage = 1,
             maxPage = 20,
             reposPerPage = 50,
-            {}, {}, {}, {}
+            {}, {}, {}
         )
     }
 }

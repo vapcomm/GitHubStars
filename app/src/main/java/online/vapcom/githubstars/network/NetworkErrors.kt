@@ -93,4 +93,3 @@ fun httpStatusToErrorState(status: HttpStatusCode, moduleCode: Int): ErrorState 
         else -> ErrorState(UIErrno.CLIENT_ERROR.errno, status.toString())
     }
 }
-

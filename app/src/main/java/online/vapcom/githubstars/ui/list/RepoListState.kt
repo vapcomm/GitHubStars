@@ -10,9 +10,10 @@ import online.vapcom.githubstars.data.GitHubRepo
 data class RepoListState(
     val isLoading: Boolean = false,                 // show loading progress on true
     val repos: List<GitHubRepo> = emptyList(),      // starred repos list to show
+    val incompleteResults: Boolean = false,         // sometimes GitHub returns not a full repos list, show warning if true
     val foundReposNumber: Long = 0,                 // total number of all starred repos on GitHub
     val currentPage: Int = 1,                       // number of current shown page
     val maxPage: Int = 1,                           // maximum page number we can request from GitHub
     val reposPerPage: Int = 1,                      // maximum repos per page (in a list)
-    val error: ErrorState = ErrorState.NO_ERROR,
+    val error: ErrorState = ErrorState.NO_ERROR
 )

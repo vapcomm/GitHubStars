@@ -12,5 +12,7 @@ interface GitHubRepository {
     suspend fun getRepoDetails(repoID: Long): Reply<GitHubRepo>
     fun previousPage()
     fun nextPage()
+    fun firstPage()
+    fun lastPage()
     fun setReposPerPage(reposPerPage: Int)
 }

@@ -77,9 +77,6 @@ val md_theme_dark_surfaceTint = Color(0xFFC5C0FF)
 val md_theme_dark_outlineVariant = Color(0xFF242424) // old  0xFF47464F
 val md_theme_dark_scrim = Color(0xFF000000)
 
-// Custom colors unused in color scheme
-val OkColor = Color(0xFF33CC00)
-
 /*
  * From ColorScheme.kt doc:
 

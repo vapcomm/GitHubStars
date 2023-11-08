@@ -8,6 +8,7 @@ import online.vapcom.githubstars.data.GitHubRepo
 
 data class SearchReplyData(
     val totalFound: Long,
+    val incompleteResults: Boolean,
     val currentPage: Int,
     val maxPage: Int,
     val reposPerPage: Int,

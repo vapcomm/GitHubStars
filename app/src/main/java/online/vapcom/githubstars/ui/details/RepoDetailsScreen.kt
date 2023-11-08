@@ -74,7 +74,8 @@ fun RepoDetailsBody(
                     IconButton(onClick = onUpClick) {
                         Icon(
                             imageVector = ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = stringResource(R.string.back),
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 },
@@ -99,7 +100,6 @@ fun RepoDetailsBody(
             } else {
                 RepoDetails(repo, onLinkClick)
             }
-
         } // Box
     }
 

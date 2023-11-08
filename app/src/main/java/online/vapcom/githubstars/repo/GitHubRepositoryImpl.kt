@@ -42,14 +42,15 @@ class GitHubRepositoryImpl(private val endpoint: GitHubEndpoint) : GitHubReposit
         Log.i(TAG, ">>> getStarredReposList:")
         when (val reply = endpoint.getStarredReposList(currentPage, reposPerPage)) {
             is Reply.Success -> {
-                reposList = reply.value.second
+                reposList = reply.value.repos
                 Reply.Success(
                     SearchReplyData(
-                        totalFound = reply.value.first,
+                        totalFound = reply.value.totalCount,
+                        incompleteResults = reply.value.incompleteResults,
                         currentPage = currentPage,
                         maxPage = endpoint.getMaxPage(reposPerPage),
                         reposPerPage = reposPerPage,
-                        repos = reply.value.second
+                        repos = reply.value.repos
                     )
                 )
             }
@@ -82,6 +83,14 @@ class GitHubRepositoryImpl(private val endpoint: GitHubEndpoint) : GitHubReposit
     override fun nextPage() {
         if(currentPage < endpoint.getMaxPage(reposPerPage))
             currentPage++
+    }
+
+    override fun firstPage() {
+        currentPage = 1
+    }
+
+    override fun lastPage() {
+        currentPage = endpoint.getMaxPage(reposPerPage)
     }
 
 }

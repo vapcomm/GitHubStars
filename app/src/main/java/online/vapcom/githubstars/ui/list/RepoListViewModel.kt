@@ -19,7 +19,7 @@ class RepoListViewModel(private val ghRepository: GitHubRepository) : ViewModel(
 
     companion object {
         private const val TAG = "RepoListVM"
-        private const val ITEMS_PER_PAGE = 25   // size of the one scrolled page of repos list
+        private const val ITEMS_PER_PAGE = 50   // size of the one scrolled page of repos list
     }
 
     private val _state = MutableStateFlow(RepoListState(reposPerPage = ITEMS_PER_PAGE))
@@ -44,6 +44,7 @@ class RepoListViewModel(private val ghRepository: GitHubRepository) : ViewModel(
                         it.copy(
                             isLoading = false,
                             repos = reply.value.repos,
+                            incompleteResults = reply.value.incompleteResults,
                             foundReposNumber = reply.value.totalFound,
                             currentPage = reply.value.currentPage,
                             maxPage = reply.value.maxPage,
@@ -76,18 +77,15 @@ class RepoListViewModel(private val ghRepository: GitHubRepository) : ViewModel(
     }
 
     /**
-     * Go to the previous page and get new repos list
+     * Go to chosen page and get new repos list
      */
-    fun previousPage() {
-        ghRepository.previousPage()
-        loadRepositoriesList()
-    }
-
-    /**
-     * Go to the next page and get new repos list
-     */
-    fun nextPage() {
-        ghRepository.nextPage()
+    fun changePage(direction: PageDirection) {
+        when (direction) {
+            PageDirection.PREVIOUS -> ghRepository.previousPage()
+            PageDirection.NEXT -> ghRepository.nextPage()
+            PageDirection.FIRST -> ghRepository.firstPage()
+            PageDirection.LAST -> ghRepository.lastPage()
+        }
         loadRepositoriesList()
     }
 

@@ -18,7 +18,7 @@ import online.vapcom.githubstars.repo.GitHubRepository
 
 private const val TAG = "RDetailsVM"
 
-class RepoDetailsViewModel(private val repoID: Long, private val ghRepository: GitHubRepository) : ViewModel() {
+class RepoDetailsViewModel(repoID: Long, private val ghRepository: GitHubRepository) : ViewModel() {
     private val _state = MutableStateFlow(RepoDetailsState())
     val state: StateFlow<RepoDetailsState>
         get() = _state

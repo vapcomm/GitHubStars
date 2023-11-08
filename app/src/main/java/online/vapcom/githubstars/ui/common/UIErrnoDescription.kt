@@ -132,8 +132,7 @@ fun NetworkErrorBody(
 @Composable
 fun UIEServerPreview() {
     GitHubStarsTheme {
-        ErrorDescriptionSheet(
-            true,
+        UIErrnoDescription(
             ErrorState(UIErrno.SERVER_ERROR.errno, "501 server has big problems with long description")
         )
     }

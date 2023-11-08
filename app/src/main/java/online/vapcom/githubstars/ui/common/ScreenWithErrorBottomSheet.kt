@@ -31,7 +31,7 @@ import online.vapcom.githubstars.data.ErrorState
 fun ScreenWithErrorBottomSheet(isError: Boolean, error: ErrorState, clearErrorState: () -> Unit, content: @Composable () -> Unit) {
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { targetState ->
+        confirmValueChange = { targetState ->
             // after user hide bottom sheet we turn off error state
             if (targetState == ModalBottomSheetValue.Hidden) {
                 clearErrorState()

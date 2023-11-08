@@ -23,7 +23,8 @@
 
     <string name="back">Back</string>
     <string name="see_on_github">See on GitHub</string>
-    <string name="unable_to_load_data">Unable to load data from server, try again later</string>
-
+    <string name="incomplete_results">The results are incomplete, only part of starred repositories are shown.\nTry again later…</string>
+    <string name="first_page">First page</string>
+    <string name="last_page">Last page</string>
 
 </resources>

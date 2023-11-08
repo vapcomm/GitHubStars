@@ -5,7 +5,7 @@
 package online.vapcom.githubstars.data
 
 /**
- * Common reply used in repositories and use cases or whole project
+ * Common reply used in repositories and endpoints or a whole project
  */
 sealed class Reply<out T : Any> {
     data class Success<out T : Any>(val value: T) : Reply<T>()

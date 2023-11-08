@@ -42,7 +42,7 @@ fun RepoDetails(repo: GitHubRepo, onLinkClick: (url: String) -> Unit, modifier: 
     val scrollState = rememberScrollState()
     Column(
         horizontalAlignment = Alignment.Start,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .verticalScroll(scrollState)
             .padding(16.dp)
@@ -145,4 +145,3 @@ fun RepoDetailsPreview() {
         )
     }
 }
-

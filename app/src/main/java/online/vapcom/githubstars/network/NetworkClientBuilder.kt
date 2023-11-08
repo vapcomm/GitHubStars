@@ -13,14 +13,13 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
-private const val TAG = "NetClient"
-
 /**
  * Configure HttpClient
  */
 class NetworkClientBuilder(private val logTag: String = TAG, private val createClient: () -> HttpClient = ::createHttpClient) {
 
     companion object {
+        private const val TAG = "NetClient"
         private const val USER_AGENT = "GitHubStars"
         // TODO: setup user-agent from system/app dependent function
     }
